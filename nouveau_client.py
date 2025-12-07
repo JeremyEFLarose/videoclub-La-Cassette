@@ -1,8 +1,9 @@
-from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QPushButton, QMessageBox, QDateEdit
+from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QPushButton, QMessageBox, QDateEdit, QTableWidgetItem
 from PyQt5 import uic
 from fonctions import clients, add_client, update_client, Client, CarteCredit
 from PyQt5.QtCore import QDate
 from datetime import datetime
+from PyQt5.QtWidgets import QTableWidget
 
 class FenetreNouveauClient(QDialog):
     def __init__(self, edit_index=None):
@@ -20,14 +21,11 @@ class FenetreNouveauClient(QDialog):
         self.txtPassword = self.findChild(QLineEdit, "txtPassword")
         self.dateInscription = self.findChild(QDateEdit, "dateInscription")
 
-        # Champs cartes de crédit (2 cartes)
-        self.txtNum1 = self.findChild(QLineEdit, "txtNum1")
-        self.txtExpire1 = self.findChild(QLineEdit, "txtExpire1")
-        self.txtCVV1 = self.findChild(QLineEdit, "txtCVV1")
-
-        self.txtNum2 = self.findChild(QLineEdit, "txtNum2")
-        self.txtExpire2 = self.findChild(QLineEdit, "txtExpire2")
-        self.txtCVV2 = self.findChild(QLineEdit, "txtCVV2")
+        # Table pour cartes de crédit
+        self.tableCartes = self.findChild(QTableWidget, "tableCartes")
+        self.tableCartes.setColumnCount(3)
+        self.tableCartes.setHorizontalHeaderLabels(["Numéro", "Expiration", "CVV"])
+        self.tableCartes.setRowCount(2)  # Toujours 2 lignes pour 2 cartes max
 
         # Boutons
         self.btnEnregistrer = self.findChild(QPushButton, "btnEnregistrer")
@@ -49,15 +47,13 @@ class FenetreNouveauClient(QDialog):
             self.cmbSexe.setCurrentText(client.getSexe())
             self.txtPassword.setText(client.password)
 
+            # Récupérer et remplir les informations de carte
             cartes = client.getCartes()
-            if len(cartes) > 0:
-                self.txtNum1.setText(cartes[0].numero)
-                self.txtExpire1.setText(cartes[0].expiration)
-                self.txtCVV1.setText(cartes[0].cvv)
-            if len(cartes) > 1:
-                self.txtNum2.setText(cartes[1].numero)
-                self.txtExpire2.setText(cartes[1].expiration)
-                self.txtCVV2.setText(cartes[1].cvv)
+            for i, carte in enumerate(cartes):
+                if i < 2:  # Gère seulement 2 cartes maximum
+                    self.tableCartes.setItem(i, 0, QTableWidgetItem(carte.numero))
+                    self.tableCartes.setItem(i, 1, QTableWidgetItem(carte.expiration))
+                    self.tableCartes.setItem(i, 2, QTableWidgetItem(carte.cvv))
 
             self.dateInscription.setDate(datetime.strptime(client.getDateInscription(), "%d-%m-%Y").date())
 
@@ -81,26 +77,29 @@ class FenetreNouveauClient(QDialog):
                 QMessageBox.warning(self, "Courriel existant", "Ce courriel est déjà utilisé par un autre client.")
                 return
 
-        # Récupération des cartes depuis les lineEdit
+        # Récupération des cartes depuis la table
         cartes = []
-        if self.txtNum1.text().strip() and self.txtExpire1.text().strip() and self.txtCVV1.text().strip():
-            cartes.append(CarteCredit(self.txtNum1.text().strip(),
-                                      self.txtExpire1.text().strip(),
-                                      self.txtCVV1.text().strip()))
-        if self.txtNum2.text().strip() and self.txtExpire2.text().strip() and self.txtCVV2.text().strip():
-            cartes.append(CarteCredit(self.txtNum2.text().strip(),
-                                      self.txtExpire2.text().strip(),
-                                      self.txtCVV2.text().strip()))
+        for row in range(self.tableCartes.rowCount()):
+            num_item = self.tableCartes.item(row, 0)
+            expire_item = self.tableCartes.item(row, 1)
+            cvv_item = self.tableCartes.item(row, 2)
+            if num_item and expire_item and cvv_item:
+                num = num_item.text().strip()
+                expire = expire_item.text().strip()
+                cvv = cvv_item.text().strip()
+                if num and expire and cvv:
+                    cartes.append(CarteCredit(num, expire, cvv))
 
+        # Création du client
         client = Client(nom, prenom, courriel, sexe, date_inscription, cartes, password)
 
         try:
             if self.edit_index is None:
-                add_client(client)
+                add_client(client)  # Ajouter un nouveau client
                 QMessageBox.information(self, "Succès", f"Client {prenom} {nom} ajouté.")
             else:
-                update_client(self.edit_index, client)
+                update_client(self.edit_index, client)  # Modifier un client existant
                 QMessageBox.information(self, "Succès", f"Client {prenom} {nom} modifié.")
-            self.accept()
+            self.accept()  # Ferme la fenêtre après enregistrement
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"Impossible d'enregistrer le client:\n{e}")
