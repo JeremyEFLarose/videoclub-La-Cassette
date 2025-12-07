@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import QDialog, QLineEdit, QComboBox, QPushButton, QMessageBox, QDateEdit
 from PyQt5 import uic
-from fonctions import clients, add_client, update_client, find_client_name, Client, CarteCredit
-from datetime import datetime
+from fonctions import clients, add_client, update_client, Client, CarteCredit
 from PyQt5.QtCore import QDate
-from PyQt5.QtGui import QIntValidator
+from datetime import datetime
 
 class FenetreNouveauClient(QDialog):
     def __init__(self, edit_index=None):
@@ -13,7 +12,7 @@ class FenetreNouveauClient(QDialog):
         self.setupUi()
 
     def setupUi(self):
-        # Champs
+        # Champs client
         self.txtNom = self.findChild(QLineEdit, "txtNom")
         self.txtPrenom = self.findChild(QLineEdit, "txtPrenom")
         self.txtCourriel = self.findChild(QLineEdit, "txtCourriel")
@@ -21,26 +20,25 @@ class FenetreNouveauClient(QDialog):
         self.txtPassword = self.findChild(QLineEdit, "txtPassword")
         self.dateInscription = self.findChild(QDateEdit, "dateInscription")
 
-        # Carte de crédit
-        self.txtNumCarte = self.findChild(QLineEdit, "txtNumCarte")
-        self.txtExpire = self.findChild(QLineEdit, "txtExpire")
-        self.txtCVV = self.findChild(QLineEdit, "txtCVV")
+        # Champs cartes de crédit (2 cartes)
+        self.txtNum1 = self.findChild(QLineEdit, "txtNum1")
+        self.txtExpire1 = self.findChild(QLineEdit, "txtExpire1")
+        self.txtCVV1 = self.findChild(QLineEdit, "txtCVV1")
+
+        self.txtNum2 = self.findChild(QLineEdit, "txtNum2")
+        self.txtExpire2 = self.findChild(QLineEdit, "txtExpire2")
+        self.txtCVV2 = self.findChild(QLineEdit, "txtCVV2")
 
         # Boutons
         self.btnEnregistrer = self.findChild(QPushButton, "btnEnregistrer")
         self.btnAnnuler = self.findChild(QPushButton, "btnAnnuler")
         self.btnEnregistrer.clicked.connect(self.enregistrer_client)
-        self.btnAnnuler.clicked.connect(self.reject)  # Ferme le dialog
+        self.btnAnnuler.clicked.connect(self.reject)
 
-        # --- Date du jour automatique ---
+        # Date du jour automatique si création
         if self.edit_index is None:
             self.dateInscription.setDate(QDate.currentDate())
             self.dateInscription.setReadOnly(True)
-
-        # --- CVV : format obligatoire 2 chiffres / 2 chiffres ---
-        # On peut forcer uniquement les chiffres et max 5 caractères (ex: "12/34")
-        self.txtCVV.setMaxLength(5)
-        self.txtCVV.setInputMask("00/00")  # Forme fixe 2 chiffres / 2 chiffres
 
         # Préremplissage si modification
         if self.edit_index is not None:
@@ -50,12 +48,17 @@ class FenetreNouveauClient(QDialog):
             self.txtCourriel.setText(client.getCourriel())
             self.cmbSexe.setCurrentText(client.getSexe())
             self.txtPassword.setText(client.password)
-            if client.getCartes():
-                carte = client.getCartes()[0]  # On prend la première carte
-                self.txtNumCarte.setText(carte.numero)
-                self.txtExpire.setText(carte.expiration)
-                self.txtCVV.setText(carte.cvv)
-            # La date originale reste modifiable si on modifie
+
+            cartes = client.getCartes()
+            if len(cartes) > 0:
+                self.txtNum1.setText(cartes[0].numero)
+                self.txtExpire1.setText(cartes[0].expiration)
+                self.txtCVV1.setText(cartes[0].cvv)
+            if len(cartes) > 1:
+                self.txtNum2.setText(cartes[1].numero)
+                self.txtExpire2.setText(cartes[1].expiration)
+                self.txtCVV2.setText(cartes[1].cvv)
+
             self.dateInscription.setDate(datetime.strptime(client.getDateInscription(), "%d-%m-%Y").date())
 
     def enregistrer_client(self):
@@ -66,29 +69,28 @@ class FenetreNouveauClient(QDialog):
         password = self.txtPassword.text().strip()
         date_inscription = self.dateInscription.date().toString("dd-MM-yyyy")
 
-        num_carte = self.txtNumCarte.text().strip()
-        expire = self.txtExpire.text().strip()
-        cvv = self.txtCVV.text().strip()
-
         # Validation champs obligatoires
         if not nom or not prenom or not courriel:
             QMessageBox.warning(self, "Champs obligatoires", "Veuillez remplir le nom, prénom et courriel.")
             return
-
         if len(password) < 8:
             QMessageBox.warning(self, "Mot de passe", "Le mot de passe doit contenir au moins 8 caractères.")
             return
-
-        # Vérification du courriel unique
         for i, c in enumerate(clients):
             if c.getCourriel() == courriel and (self.edit_index is None or self.edit_index != i):
                 QMessageBox.warning(self, "Courriel existant", "Ce courriel est déjà utilisé par un autre client.")
                 return
 
-        # Création de la carte de crédit
+        # Récupération des cartes depuis les lineEdit
         cartes = []
-        if num_carte and expire and cvv:
-            cartes.append(CarteCredit(num_carte, expire, cvv))
+        if self.txtNum1.text().strip() and self.txtExpire1.text().strip() and self.txtCVV1.text().strip():
+            cartes.append(CarteCredit(self.txtNum1.text().strip(),
+                                      self.txtExpire1.text().strip(),
+                                      self.txtCVV1.text().strip()))
+        if self.txtNum2.text().strip() and self.txtExpire2.text().strip() and self.txtCVV2.text().strip():
+            cartes.append(CarteCredit(self.txtNum2.text().strip(),
+                                      self.txtExpire2.text().strip(),
+                                      self.txtCVV2.text().strip()))
 
         client = Client(nom, prenom, courriel, sexe, date_inscription, cartes, password)
 
@@ -99,7 +101,6 @@ class FenetreNouveauClient(QDialog):
             else:
                 update_client(self.edit_index, client)
                 QMessageBox.information(self, "Succès", f"Client {prenom} {nom} modifié.")
-
-            self.accept()  # Ferme le dialog
+            self.accept()
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"Impossible d'enregistrer le client:\n{e}")

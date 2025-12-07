@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>770</width>
+    <width>750</width>
     <height>261</height>
    </rect>
   </property>
@@ -33,82 +33,29 @@ QPushButton:hover {
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="4">
-    <widget class="QLineEdit" name="txtNumCarte"/>
-   </item>
-   <item row="3" column="3" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-    <widget class="QLabel" name="lblCVV">
+   <item row="2" column="1" alignment="Qt::AlignLeft">
+    <widget class="QLineEdit" name="txtNom">
      <property name="minimumSize">
       <size>
-       <width>150</width>
+       <width>200</width>
        <height>0</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>CVV :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="txtPrenom"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="txtNom"/>
-   </item>
-   <item row="2" column="3">
-    <widget class="QLabel" name="lblExpiration">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Expiration :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
+   <item row="4" column="1" alignment="Qt::AlignLeft">
     <widget class="QComboBox" name="cmbSexe">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="editable">
       <bool>true</bool>
      </property>
      <property name="currentText">
-      <string/>
+      <string>Homme</string>
      </property>
      <item>
       <property name="text">
@@ -121,16 +68,6 @@ QPushButton:hover {
       </property>
      </item>
     </widget>
-   </item>
-   <item row="3" column="4">
-    <widget class="QLineEdit" name="txtCVV">
-     <property name="inputMask">
-      <string>00/00</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4">
-    <widget class="QLineEdit" name="txtExpire"/>
    </item>
    <item row="2" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
     <widget class="QLabel" name="lblNom">
@@ -162,8 +99,15 @@ QPushButton:hover {
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="txtCourriel"/>
+   <item row="3" column="1" alignment="Qt::AlignLeft">
+    <widget class="QLineEdit" name="txtCourriel">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0" alignment="Qt::AlignRight">
     <widget class="QLabel" name="lblCourriel">
@@ -189,36 +133,6 @@ QPushButton:hover {
      </property>
      <property name="text">
       <string>Courriel :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3" alignment="Qt::AlignVCenter">
-    <widget class="QLabel" name="lblCarte">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>No. de carte :</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -315,65 +229,6 @@ QPushButton:hover {
      </property>
     </widget>
    </item>
-   <item row="8" column="4">
-    <widget class="QLineEdit" name="txtPassword">
-     <property name="echoMode">
-      <enum>QLineEdit::Password</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="3">
-    <widget class="QLabel" name="lblPassword">
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Mot de passe :</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QDateEdit" name="dateInscription">
-     <property name="maximumDate">
-      <date>
-       <year>2500</year>
-       <month>1</month>
-       <day>1</day>
-      </date>
-     </property>
-     <property name="minimumDate">
-      <date>
-       <year>1900</year>
-       <month>1</month>
-       <day>1</day>
-      </date>
-     </property>
-     <property name="displayFormat">
-      <string>dd/MM/yyyy</string>
-     </property>
-     <property name="calendarPopup">
-      <bool>true</bool>
-     </property>
-     <property name="timeSpec">
-      <enum>Qt::LocalTime</enum>
-     </property>
-     <property name="date">
-      <date>
-       <year>2025</year>
-       <month>12</month>
-       <day>1</day>
-      </date>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="0">
     <widget class="QLabel" name="lblDate">
      <property name="minimumSize">
@@ -401,6 +256,155 @@ QPushButton:hover {
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" alignment="Qt::AlignLeft">
+    <widget class="QDateEdit" name="dateInscription">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="maximumDate">
+      <date>
+       <year>2500</year>
+       <month>1</month>
+       <day>1</day>
+      </date>
+     </property>
+     <property name="minimumDate">
+      <date>
+       <year>1900</year>
+       <month>1</month>
+       <day>1</day>
+      </date>
+     </property>
+     <property name="displayFormat">
+      <string>dd/MM/yyyy</string>
+     </property>
+     <property name="calendarPopup">
+      <bool>false</bool>
+     </property>
+     <property name="timeSpec">
+      <enum>Qt::LocalTime</enum>
+     </property>
+     <property name="date">
+      <date>
+       <year>2025</year>
+       <month>12</month>
+       <day>1</day>
+      </date>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="lblPassword">
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mot de passe :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1" alignment="Qt::AlignLeft">
+    <widget class="QLineEdit" name="txtPassword">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" rowspan="5" colspan="3">
+    <widget class="QTableWidget" name="tableCartes">
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="rowCount">
+      <number>3</number>
+     </property>
+     <property name="columnCount">
+      <number>3</number>
+     </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>110</number>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
+     </attribute>
+     <row/>
+     <row/>
+     <row/>
+     <column>
+      <property name="text">
+       <string>No. de carte</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>CCV</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Expiration</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Carte de crédit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" alignment="Qt::AlignLeft">
+    <widget class="QLineEdit" name="txtPrenom">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
      </property>
     </widget>
    </item>
