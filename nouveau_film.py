@@ -10,7 +10,7 @@ class FenetreNouveauFilm(QDialog):
         self.setupUi()
 
     def setupUi(self):
-        # Champs
+        # Champs à remplir
         self.txtTitre = self.findChild(QLineEdit, "txtTitre")
         self.txtDuree = self.findChild(QLineEdit, "txtDuree")
         self.txtCategorie = self.findChild(QLineEdit, "txtCategorie")  # Singulier
@@ -22,32 +22,24 @@ class FenetreNouveauFilm(QDialog):
         self.btnEnregistrer.clicked.connect(self.enregistrer_film)
         self.btnAnnuler.clicked.connect(self.reject)  # Ferme seulement le dialog
 
-        # Préremplissage si modification
-        if self.edit_index is not None:
-            film = films[self.edit_index]
-            self.txtTitre.setText(film.getNom())
-            self.txtDuree.setText(film.getDuree())
-            self.txtCategorie.setText(film.getCategorie())
-
     def enregistrer_film(self):
         titre = self.txtTitre.text().strip()
         duree = self.txtDuree.text().strip()
         categorie = self.txtCategorie.text().strip()
 
-        # Validation
+        # Champs obligatoire : Titre, Durée
         if not titre or not duree:
-            QMessageBox.warning(self, "Champs obligatoires",
-                                "Veuillez remplir au minimum le titre et la durée.")
+            QMessageBox.warning(self, "Champs obligatoires", "Veuillez remplir au minimum le titre et la durée.")
             return
 
         try:
             film = Film(titre, duree, categorie)
             if self.edit_index is None:
-                add_film(film)  # Ajoute dans films et sauvegarde
+                add_film(film)
                 QMessageBox.information(self, "Succès", f"Film '{titre}' ajouté.")
             else:
                 update_film(self.edit_index, film)
                 QMessageBox.information(self, "Succès", f"Film '{titre}' modifié.")
-            self.accept()  # Ferme le dialog
+            self.accept()
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"Impossible d’enregistrer le film:\n{e}")

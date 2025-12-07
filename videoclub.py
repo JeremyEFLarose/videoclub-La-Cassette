@@ -19,31 +19,30 @@ class FenetrePrincipale(QMainWindow):
         self.tableClients = self.findChild(QTableWidget, "tableClients")
         self.tableFilms = self.findChild(QTableWidget, "tableFilms")
 
-        # Boutons Clients
+        # Boutons pour Clients
         self.btnAjouterClient = self.findChild(QPushButton, "btnAjouterClient")
         self.btnModifier = self.findChild(QPushButton, "btnModifier")
         self.btnSupprimer = self.findChild(QPushButton, "btnSupprimer")
 
-        # Boutons Films
+        # Boutons pour Films
         self.btnAjouterFilm = self.findChild(QPushButton, "btnAjouterFilm")
 
         # Bouton Déconnexion
         self.btnDeconnexion = self.findChild(QPushButton, "btnDeconnexion")
 
-        # Connexions des boutons
+        # Liens des boutons
         self.btnAjouterClient.clicked.connect(self.ajouter_client)
         self.btnModifier.clicked.connect(self.modifier_client)
         self.btnSupprimer.clicked.connect(self.supprimer_selection)
         self.btnAjouterFilm.clicked.connect(self.ajouter_film)
         self.btnDeconnexion.clicked.connect(self.deconnexion)
 
-        # Gestion des droits selon access_type
+        # Gestion des droits selon le type d'accès, seulement une restriction en lecture
         if self.access_type == "lecture":
-            # Désactive tous les boutons de modification
             for btn in [self.btnAjouterClient, self.btnModifier, self.btnSupprimer, self.btnAjouterFilm]:
                 btn.setEnabled(False)
 
-    # ----------------- Rafraîchir tableaux -----------------
+    # ----- Rafraîchir tableaux -----
     def refresh_table_clients(self):
         self.tableClients.setRowCount(0)
         for c in clients:
@@ -71,7 +70,7 @@ class FenetrePrincipale(QMainWindow):
             itemCategorie.setToolTip(f"Acteurs : {f.getActeurs()}")
             self.tableFilms.setItem(ligne, 2, itemCategorie)
 
-    # ----------------- Clients -----------------
+    # ----- Clients -----
     def ajouter_client(self):
         dlg = FenetreNouveauClient()
         if dlg.exec_():
@@ -89,13 +88,13 @@ class FenetrePrincipale(QMainWindow):
         if dlg.exec_():
             self.refresh_table_clients()
 
-    # ----------------- Films -----------------
+    # ----- Films ------
     def ajouter_film(self):
         dlg = FenetreNouveauFilm()
         if dlg.exec_():
             self.refresh_table_films()
 
-    # ----------------- Supprimer -----------------
+    # ---- Supprimer -----
     def supprimer_selection(self):
         if self.tableClients.currentRow() != -1:
             ligne = self.tableClients.currentRow()
@@ -118,7 +117,7 @@ class FenetrePrincipale(QMainWindow):
         else:
             QMessageBox.information(self, "Aucun élément", "Sélectionnez un client ou un film à supprimer.")
 
-    # ----------------- Déconnexion -----------------
+    # ----- Déconnexion -----
     def deconnexion(self):
         try:
             from login import FenetreLogin  # Import local pour éviter les imports circulaires

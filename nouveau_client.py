@@ -33,12 +33,12 @@ class FenetreNouveauClient(QDialog):
         self.btnEnregistrer.clicked.connect(self.enregistrer_client)
         self.btnAnnuler.clicked.connect(self.reject)
 
-        # Date du jour automatique si création
+        # Date du jour automatisé
         if self.edit_index is None:
             self.dateInscription.setDate(QDate.currentDate())
             self.dateInscription.setReadOnly(True)
 
-        # Préremplissage si modification
+        # Retrouver les données si on modifie un client
         if self.edit_index is not None:
             client = clients[self.edit_index]
             self.txtNom.setText(client.getNom())
@@ -47,10 +47,10 @@ class FenetreNouveauClient(QDialog):
             self.cmbSexe.setCurrentText(client.getSexe())
             self.txtPassword.setText(client.password)
 
-            # Récupérer et remplir les informations de carte
+            # Récupérer les informations de la carte de crédit
             cartes = client.getCartes()
             for i, carte in enumerate(cartes):
-                if i < 2:  # Gère seulement 2 cartes maximum
+                if i < 2:  # Max 2 cartes de crédit
                     self.tableCartes.setItem(i, 0, QTableWidgetItem(carte.numero))
                     self.tableCartes.setItem(i, 1, QTableWidgetItem(carte.expiration))
                     self.tableCartes.setItem(i, 2, QTableWidgetItem(carte.cvv))
@@ -65,7 +65,7 @@ class FenetreNouveauClient(QDialog):
         password = self.txtPassword.text().strip()
         date_inscription = self.dateInscription.date().toString("dd-MM-yyyy")
 
-        # Validation champs obligatoires
+        # Champs obligatoires Nom, Prénom et Courriel
         if not nom or not prenom or not courriel:
             QMessageBox.warning(self, "Champs obligatoires", "Veuillez remplir le nom, prénom et courriel.")
             return

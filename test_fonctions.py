@@ -3,12 +3,12 @@ from fonctions import Client, Film, clients, films, add_client, update_client, f
 
 class TestFonctionsVideoclub(unittest.TestCase):
 
+#Vider les listes avant chaque tests
     def setUp(self):
-        # Réinitialise les listes avant chaque test
         clients.clear()
         films.clear()
 
-    # -------------------- Tests Clients --------------------
+    # ----- Tests Clients -----
     def test_ajout_client(self):
         c = Client("Dupont", "Jean", "jean.dupont@test.com", "M", "06-12-2025")
         add_client(c)
@@ -28,7 +28,7 @@ class TestFonctionsVideoclub(unittest.TestCase):
         index = find_client_name("Dupont", "Jean")
         self.assertEqual(index, 0)
 
-    # -------------------- Tests Films --------------------
+    # ----- Tests Films -----
     def test_ajout_film(self):
         f = Film("Inception", "2h28", ["Science-Fiction"], ["Leonardo DiCaprio"])
         films.append(f)  # Utilise append directement si tu veux éviter la sauvegarde

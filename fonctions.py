@@ -1,6 +1,4 @@
-# fonctions.py
-
-# -------------------- Classes --------------------
+#  ----- Classes -----
 class CarteCredit:
     def __init__(self, numero, expiration, cvv):
         self.numero = numero
@@ -46,12 +44,10 @@ class Film:
     def __init__(self, nom, duree, categories=None, acteurs=None):
         self.nom = nom
         self.duree = duree
-        # S'assurer que categories est toujours une liste
         if isinstance(categories, str):
             self.categories = [cat.strip() for cat in categories.split(",")]
         else:
             self.categories = categories if categories else []
-        # S'assurer que acteurs est toujours une liste
         self.acteurs = acteurs if acteurs else []
 
     def getNom(self):
@@ -61,17 +57,19 @@ class Film:
         return self.duree
 
     def getCategorie(self):
-        """Retourne une chaîne avec les catégories séparées par virgule"""
         return ", ".join(self.categories)
 
     def getActeurs(self):
-        """Retourne une chaîne avec les noms des acteurs séparés par virgule"""
         return ", ".join(self.acteurs)
 
+        #Sépare les acteurs et catégorie par une virgule
 
-# -------------------- Listes globales --------------------
+
+# ----- Listes globales -----
+# Clients ajoutés via l'app
 clients = []
 
+# Films hardcodés
 films = [
     Film("Troll", "2h28", ["Action", "Science-Fiction"], ["Tom Hanks", "Emma Watson"]),
     Film("Gladiateur", "1h47", ["Drame", "Action"], ["Russell Crowe", "Joaquin Phoenix"]),
@@ -81,7 +79,7 @@ films = [
 ]
 
 
-# -------------------- Clients --------------------
+# ----- Clients -----
 def add_client(client):
     clients.append(client)
     sauvegarder_clients()
@@ -106,7 +104,7 @@ def find_client_name(nom, prenom):
     return -1
 
 
-# -------------------- Films --------------------
+# ----- Films -----
 def add_film(film):
     films.append(film)
     sauvegarder_films()
@@ -124,7 +122,7 @@ def delete_film(index):
         sauvegarder_films()
 
 
-# -------------------- Sauvegarde optionnelle --------------------
+# ----- Enregistrement des nouveaux clients et films  -----
 def sauvegarder_clients():
     try:
         with open("clients.txt", "w", encoding="utf-8") as f:
